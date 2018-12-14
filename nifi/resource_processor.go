@@ -70,6 +70,10 @@ func ResourceProcessor() *schema.Resource {
 										Required: true,
 										Elem:     &schema.Schema{Type: schema.TypeString},
 									},
+									"comments": {
+										Type: schema.TypeString,
+										Optional: true,
+									},
 								},
 							},
 						},
@@ -366,6 +370,7 @@ func ProcessorFromSchema(d *schema.ResourceData, processor *Processor) error {
 	processor.Component.Config.SchedulingPeriod = config["scheduling_period"].(string)
 	processor.Component.Config.ExecutionNode = config["execution_node"].(string)
 	processor.Component.Config.ConcurrentlySchedulableTaskCount = config["concurrently_schedulable_task_count"].(int)
+	processor.Component.Config.Comments = config["comments"].(string)
 
 	processor.Component.Config.Properties = map[string]interface{}{}
 	properties := config["properties"].(map[string]interface{})
@@ -408,6 +413,7 @@ func ProcessorToSchema(d *schema.ResourceData, processor *Processor) error {
 			"scheduling_period":                   processor.Component.Config.SchedulingPeriod,
 			"execution_node":                      processor.Component.Config.ExecutionNode,
 			"properties":                          processor.Component.Config.Properties,
+			"comments":                            processor.Component.Config.Comments,
 			"auto_terminated_relationships":       relationships,
 		}},
 	}}
